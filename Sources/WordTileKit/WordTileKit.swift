@@ -36,10 +36,15 @@ public struct WordTile: View {
     public let char: Character?
     public let state: State
     public var theme: WordTileTheme = .init()
-    public var corner: CornerStrategy = .auto()   // avoids "too round" look on small tiles
+    public var corner: CornerStrategy = .auto()   // avoids “too round” look on small tiles
     public var size: CGFloat = 44
     public var fontWeight: Font.Weight = .heavy
     public var placeholder: String = "•"
+
+    // Tighten inner content vs. tile by increasing text scale defaults
+    // Roughly halves the perceived inner padding compared to previous defaults.
+    public var textScale: CGFloat = 0.66
+    public var placeholderScale: CGFloat = 0.56
 
     public init(
         char: Character?,
@@ -48,7 +53,9 @@ public struct WordTile: View {
         corner: CornerStrategy = .auto(),
         size: CGFloat = 44,
         fontWeight: Font.Weight = .heavy,
-        placeholder: String = "•"
+        placeholder: String = "•",
+        textScale: CGFloat = 0.66,
+        placeholderScale: CGFloat = 0.56
     ) {
         self.char = char
         self.state = state
@@ -57,6 +64,8 @@ public struct WordTile: View {
         self.size = size
         self.fontWeight = fontWeight
         self.placeholder = placeholder
+        self.textScale = textScale
+        self.placeholderScale = placeholderScale
     }
 
     private var resolvedCorner: CGFloat {
@@ -79,12 +88,12 @@ public struct WordTile: View {
 
             if state == .hidden {
                 Text(placeholder)
-                    .font(.system(size: size * 0.42, weight: .black, design: .rounded))
+                    .font(.system(size: size * placeholderScale, weight: .black, design: .rounded))
                     .kerning(0)
                     .foregroundColor(theme.text.opacity(0.28))
             } else {
                 Text(char.map(String.init) ?? "")
-                    .font(.system(size: size * 0.5, weight: fontWeight, design: .rounded))
+                    .font(.system(size: size * textScale, weight: fontWeight, design: .rounded))
                     .minimumScaleFactor(0.6)
                     .kerning(0)
                     .foregroundColor(theme.text)
@@ -112,6 +121,10 @@ public struct WordTilesRow: View {
     public var placeholder: String = "•"
     public var fitMode: FitMode = .squeeze
 
+    // Propagate text scaling across the row
+    public var textScale: CGFloat = 0.66
+    public var placeholderScale: CGFloat = 0.56
+
     private var chars: [Character] { Array(word.uppercased()) }
 
     public init(
@@ -124,7 +137,9 @@ public struct WordTilesRow: View {
         minTile: CGFloat = 26,
         maxTile: CGFloat = 52,
         placeholder: String = "•",
-        fitMode: FitMode = .squeeze
+        fitMode: FitMode = .squeeze,
+        textScale: CGFloat = 0.66,
+        placeholderScale: CGFloat = 0.56
     ) {
         self.word = word
         self.hiddenIndices = hiddenIndices
@@ -136,6 +151,8 @@ public struct WordTilesRow: View {
         self.maxTile = maxTile
         self.placeholder = placeholder
         self.fitMode = fitMode
+        self.textScale = textScale
+        self.placeholderScale = placeholderScale
     }
 
     public var body: some View {
@@ -167,7 +184,10 @@ public struct WordTilesRow: View {
                     theme: theme,
                     corner: corner,
                     size: tileSize,
-                    placeholder: placeholder
+                    fontWeight: .heavy,
+                    placeholder: placeholder,
+                    textScale: textScale,
+                    placeholderScale: placeholderScale
                 )
             }
         }
