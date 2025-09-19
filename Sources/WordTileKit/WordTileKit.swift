@@ -138,8 +138,8 @@ public struct WordTilesRow: View {
         maxTile: CGFloat = 52,
         placeholder: String = "•",
         fitMode: FitMode = .squeeze,
-        textScale: CGFloat = 0.66,
-        placeholderScale: CGFloat = 0.56
+        textScale: CGFloat = 0.7,
+        placeholderScale: CGFloat = 0.7
     ) {
         self.word = word
         self.hiddenIndices = hiddenIndices
