@@ -12,7 +12,7 @@ public struct WordTileTheme {
         fill: Color = Color(red: 1.0, green: 0.92, blue: 0.45),
         hiddenFill: Color = Color.yellow.opacity(0.35),
         stroke: Color = Color.black.opacity(0.08),
-        text: Color = .primary
+        text: Color = .black
     ) {
         self.fill = fill
         self.hiddenFill = hiddenFill
